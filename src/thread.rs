@@ -447,10 +447,6 @@ impl<A: IntoLuaMulti, R: FromLuaMulti> Stream for AsyncThread<A, R> {
                 this.thread.resume_inner(&lua, ())?
             };
 
-            if nresults == 1 && is_poll_pending(thread_state) {
-                return Poll::Pending;
-            }
-
             check_stack(state, nresults + 1)?;
             ffi::lua_xmove(thread_state, state, nresults);
 
